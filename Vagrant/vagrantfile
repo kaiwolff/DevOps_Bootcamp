@@ -1,0 +1,15 @@
+
+
+Vagrant.configure("2") do |config|
+
+ config.vm.box = "ubuntu/xenial64"
+# creating a virtual machine ubuntu 
+# assign IP so that any webapps are accessible on host machine
+ config.vm.network "private_network", ip: "192.168.10.100"
+ #to get this working, require hostsupdater to be instlaled on localhost 
+ config.hostsupdater.aliases = ["development.local"]
+ 
+ # Sync folder from OS to VM
+ config.vm.synced_folder "./app","/home/vagrant/app"
+ config.vm.provision :shell, path: "provision.sh"
+end
