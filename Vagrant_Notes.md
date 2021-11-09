@@ -1,4 +1,15 @@
-# Vagrant
+# Vagrant Notes
+
+
+## The Development Environment
+
+- This describes the software packages and systems used to develop and run the software being worked on
+- Also includes the IDEs
+- Needs to be robust, and ideally fast & easy to set up
+- It is a good idea to automate setup and repetitive tasks
+- Standardisation to an environment as close to production as possible helps catch potential bugs
+
+## Vagrant
 
 Vagrant is a means of automating the setup of virtual machines. The instructions are saved in a vagrantfile. This ensures everyone is working in the same environment, and stops bugs from being blamed on a difference between machines.
 

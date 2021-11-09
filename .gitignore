@@ -1,2 +1,7 @@
 Vagrant/.vagrant/  
 Vagrant/ubuntu-xenial-16.04-cloudimg-console.log
+Node_js_deployment_exercise/starter-code/node_modules/
+Node_js_deployment_exercise/starter-code/.vagrant/
+Node_js_deployment_exercise/starter-code/app/node_modules/
+Node_js_deployment_exercise/starter-code/npm-debug.log
+Node_js_deployment_exercise/starter-code/app/npm-debug.log
