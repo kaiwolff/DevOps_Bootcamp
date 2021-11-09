@@ -92,3 +92,37 @@ the app will now start up. However, this way will run in the foreground, which i
 The next step is to automate this process, which will once again be done using a provisioning shell script, run via the vagrantfile.
 
 ## The Database VM
+
+Next, want to have a separate VM to hsot the database.
+
+Starting by setting up a simple VM in a separate directory. See Mongo_DB directory for this.
+
+Initially, just assigning an IP and then workign manually.
+
+Start by installing MongoDB:
+
+```
+# be careful of these keys, they will go out of date
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv D68FA50FEA312927
+echo "deb https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# sudo apt-get install mongodb-org=3.2.20 -y
+sudo apt-get install -y mongodb-org=3.2.20 mongodb-org-server=3.2.20 mongodb-org-shell=3.2.20 mongodb-org-mongos=3.2.20 mongodb-org-tools=3.2.20
+```
+
+Now, let's bring mongod online:
+
+```
+sudo systemctl restart mongod
+sudo systemctl enable mongod
+```
+
+check whether this is active using `systemctl status mongod`.
+
+- Now, mongodb is running, but won't yet allow the other VM to contact it. Since the activity is constrained to our machine, we can set bindIp to `0.0.0.0`, whcih tells mongod to allow contact from anywhere.
+- This is done by changing the `mongo.conf` file, located in `/etc`.
+
+-0 Having done this, restart mongod and enable again.
