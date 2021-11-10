@@ -16,5 +16,6 @@ sudo apt-get upgrade -y
 cd ~app/app
 
 npm install
-(npm run start&) 
+#not sure how to make this run so commented out for now
+#(npm run start&) 
 

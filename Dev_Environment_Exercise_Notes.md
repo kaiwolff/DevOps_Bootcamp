@@ -82,18 +82,18 @@ npm install
 npm start
 ```
 
-the app will now start up. However, this way will run in the foreground, which is suboptimal. Want the app to run in the backgroudn so we cna continue to interact with the shell if needed. To do this, we use:
+the app will now start up. However, this way will run in the foreground, which is suboptimal. Want the app to run in the background so we cna continue to interact with the shell if needed. To do this, we use:
 ```
 (npm run start&) 
 ```
 
 
 
-The next step is to automate this process, which will once again be done using a provisioning shell script, run via the vagrantfile.
+The next step is to automate this process, which will once again be done using a provisioning shell script (in this case `provision_app`), run via the vagrantfile.
 
 ## The Database VM
 
-Next, want to have a separate VM to hsot the database.
+Next, want to have a separate VM to host the database.
 
 Starting by setting up a simple VM in a separate directory. See Mongo_DB directory for this.
 
@@ -125,4 +125,8 @@ check whether this is active using `systemctl status mongod`.
 - Now, mongodb is running, but won't yet allow the other VM to contact it. Since the activity is constrained to our machine, we can set bindIp to `0.0.0.0`, whcih tells mongod to allow contact from anywhere.
 - This is done by changing the `mongo.conf` file, located in `/etc`.
 
--0 Having done this, restart mongod and enable again.
+- Having done this, restart mongod and enable again.
+
+The next step is to automate this. The installation steps are packaged into the `provision_db.sh` file.
+
+However we also need to automate 
