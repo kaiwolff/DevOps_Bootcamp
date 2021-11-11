@@ -1,4 +1,4 @@
-# Bootcamp Day 2 - Dev Environment Exercise
+# Bootcamp Day 2 & 3 - Dev Environment Exercise
 
 - Aiming to deploy Nodejs app with MongoDB database
 - Will be using Monolith Architecture (aiming to be self-contained within virtual machines)
@@ -128,5 +128,59 @@ check whether this is active using `systemctl status mongod`.
 - Having done this, restart mongod and enable again.
 
 The next step is to automate this. The installation steps are packaged into the `provision_db.sh` file.
+We also want a reverse proxy to allow easier interaction with the machine.
+## Reverse Proxy
 
-However we also need to automate 
+**A note on reverse proxies**
+
+- The purpose of a reverse proxy is to correctly direct requests to a particular domain to the relevant web server.
+- Non-technical analogy is a diversion, providing an alternative route to a destination
+
+- Benefits of usign a reverse proxy include:
+    -Freeing up ports by handling everything through one 
+
+
+
+### Requirements for the reverse proxy:
+
+- Want nginx to listen to port 3000, send that traffic to default port 80
+- `192.168.10.100` will then show the nodeapp homepage instead of the nginx default page
+
+### Reverse Proxy - Execution
+
+- Modify the nginx config file
+- should be at `/etc/nginx/sites-available/default
+- can either edit this or completely delete and replace with new config file.
+- After that, `restart` nginx and `enable`
+
+Commands:
+```
+sudo rm -rf /etc/sites-available/default
+sudo nano /etc/sites-available/default
+
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+```
+
+Note that `enable` allows a service to be set up again without needing to completely destroy the system.
+
+The cleaner option is to replace the `default` file.
+- Interested in the `location` block, which is used to tell nginx to forward requests to the main IP to a particular port
+
+The `default` file is replaced with:
+
+```
+upstream nodejs {                                                                                                                                                                        server 192.168.10.100:3000;                                                                                                                                                      }                                                                                                                                                                                                                                                                                                                                                                 server {                                                                                                                                                                                 listen 80;                                                                                                                                                                       location / {                                                                                                                                                                             proxy_pass http://localhost:3000;                                                                                                                                                proxy_http_version 1.1;                                                                                                                                                          proxy_set_header Upgrade $http_upgrade;                                                                                                                                          proxy_set_header Host $host;                                                                                                                                                     proxy_cache_bypass $http_upgrade;                                                                                                                                        }                                                                                                                                                                        }  
+```
+
+This tells nginx to forward any requests to 192.168.10.100 to port 3000, which is where the app is acting.
+
+
+# Automation
+
+With all this done, we now want to automate all these steps, so that a simple `vagrant up` will set up and provision our machines and set up the reverse proxy.
+
+To do this, we will need to replace the `mongo.conf` file on the db machine, and the `default` file on the app machine.
+
+Ordering is important, as we need to create the environment variables first.
+ For a full Readme on the automated app, enter the `Multi_Machine` directory and read the `README.md` file.
