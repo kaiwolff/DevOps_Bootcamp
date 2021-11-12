@@ -33,10 +33,11 @@ sudo service nginx restart
 #node app/app/seeds/seed.js
 
 cd /home/app
+node seeds/seed.js
 sudo npm install
 sudo npm install express
 #seed the database
-node seeds/seed.js
+
 
 #at this point, should be able to simply run the app by sshing in and entering the npm command.
 

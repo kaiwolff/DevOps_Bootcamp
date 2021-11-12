@@ -4,7 +4,7 @@
 - enter this folder on your git bash
 - Type `vagrant up`. Wait for vagrant to boot and provision your VMs
 - Type `vagrant ssh app` to connect to the application VM
-- enter /home/app/
+- enter /home/app/ (Type `cd /home/app`)
 - type `(npm run start&)` to run the app in the background.
 - type `node seeds/seed.js` to seed the database.
 - You can now access the app via your browser on 192.168.10.100
@@ -126,3 +126,10 @@ node seeds/seed.js
 - Need an environment variable to point to the `db` VM. This is done by appending the relevant command to `.bashrc` and then using the `source` command to reload the settings.
 - Also need to set up nginx to be our reverse proxy. To do this, we copy our provisioned "default" file into the target location and then restart nginx.
 - Now, the machines are connected and ready for us to seed the database and start the app.
+
+#### Final Steps
+
+- Type `vagrant ssh app` to access the app database.
+- Once you are connected to the VM, type `cd /home/app` to access the correct folder.
+- Next, type `node seeds/seed.js`. This will take a moment to finish, but you should get a message stating the database was seeded.
+- Finally, start the app by typing `(npm run start&)`. Congratulations, your app should be all good to go!
