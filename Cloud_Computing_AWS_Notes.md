@@ -2,8 +2,8 @@
 
 ## Defining Cloud Computing
 
-- HAve computational resources or services available 
-- THis can be either on the internet, or on an organisation-internal channel. A hybrid of hte two is also possible.
+- Have computational resources or services available via a network, rather than restricting to a local machine or facility.
+- This can be either on the internet, or on an organisation-internal channel. A hybrid of hte two is also possible.
     - An example of this is banking, where confidential data will be managed on an internal cloud, but publically accessible files will be served from a public cloud
 - Clouds are used by almost any larger organisation that requires computing services.
 
