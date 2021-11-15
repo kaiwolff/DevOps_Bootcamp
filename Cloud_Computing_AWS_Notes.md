@@ -1,4 +1,4 @@
-#Cloud Computing & AWS
+# Cloud Computing & AWS
 
 ## Defining Cloud Computing
 
@@ -178,7 +178,7 @@ Full guide to editing or setting up an alarm [here](https://docs.aws.amazon.com/
 
 More on SNS groups [here](https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html)
 
-### Monitoring Concepts
+## Monitoring Concepts
 
 ![](images/Monitoring_Diagram.png)
 
@@ -226,10 +226,113 @@ A good idea is to split various metrics into separate dashboards, so that partic
 - Autoscaling Group
 - Launch template configuration - how many instances should be running at all times
     - Minimum and maximum required (e.g. min=2, max=3)
-- Policy on scaling otu and scaling in
-    - Scaling inwards towards minimum number of instances as demand drops
+- Policy on scaling out and scaling in
+    - This is necessary to avoid paying for services that are not needed
 
 - Scaling on Demand (Terminology)
     - Scaling Up versus scaling out: Scaling up means making components on an instance bigger to meet demand (e.g. increasing CPU capacity). Scaling outmeans increasing the number of instances
     - Scaling to demand is generally best done by sxcaling out, as the previous configuration is known to be working.
+
+# S3 - Simple Storage Service & AWS CLI
+### Quick intro to AWS CLI
+- AWS CLI is the command line interface for AWS. This exists as an alternative to the traditional interface
+    - Available through the AWS developer's toolkit. Can be installed and used on any EC2 instance.
+    - Allows doing CRUD operations without needing to go through the multi-step AWS console.
+
+
+**To create AWS CLI**
+- Require dependencies: python 3 and above
+- AWS access and secret keys
+- S3 access through our IAM role
+- Note: It is also necessary to create an alias for python3 as python.
+## S3 buckets
+- These are simply storage for objects. Used to store and protect data
+- Highly scalable and usable for any amount of data
+- Very useful in disaster recovery planning
+- Also allows data to be persistent after an EC2 instance is deleted
+
+Once requirements are installed, need to set up key. This is done by typing `aws configure`, after which the programme prompts the input of authentication details and desired output.
+
+Test connection by typing `aws s3 ls` to list the S3 directories. This will nto work if the permissions were entered incorrectly.
+
+### S3 Storage Classes
+- Standard
+    - Slightly more expensive than Glacier, but useful for data that is frequently accessed as access time is shorter
+- S3 Glacier
+    - Useful if something does not need to be available straight away.
+    - An example might be old employee records, which you are required to keep but would only be required in response to referencing queries
+
+### CRUD in buckets (huehuehue)
+
+- Now that we have discussed how to authenticate, it is time to try out CRUD operations with buckets
+
+- To make a new bucket, use `aws s3 mb s3://devops-bootcamp-kwolff` (mb for make bucket, the last part is an addres and variable)
+    - note that bucket naming convention will not accept underscores, but will accept dashes
+    - to explicitily force a particular region, use `-- region [region name]`. Otherwise, the default region given during the authentication step will be used.
+
+- Next, let's create a file called `test.md` on our instance and try to store it in the S3 bucket.
+    - To do this, use `aws s3 cp [file or filepath] s3://devops-bootcamp-kwolff`. Of course, the filepath for the s3 bucket changes d3epending on the intended bucket name
+- The file copied into the s3 bucket is completely separate from the one on the ec2 instance, so editing or deleting it on the instance will not affect the backed up file.
+- Retrieval of file works the same way as copying files to the S3 bucket, but with the first filepath being the S3 address, and the second being destination filepath.
+
+- Can also synchronise folders, using `aws s3 sync [s3 filepath] [localhost folder name]`. If this file is not yet existing on the instance, it will be created
+
+- Deletion of filess uses `aws s3 rm [bucket-path]`
+- to delete a whole bucket, we need to use `aws s3 rb [bucket path] [bucket name]`
+- to empy a bucket or a folder in a bucket (keep the name but delete all files), use `aws s3 rm [bucket path] --recursive [bucket name]`
+    - note that hte bucket name needs to be there to confirm the choice, similar to a `-y` in some linux commands
+
+### AWS CLI
+
+Manipulating S3 buckets is only one of the features of the AWS command line itnerface. It is possible to create any aws resource as they are required. this leads neatly onto infrastructure-as-code.
+
+## boto3
+
+This is a python package that can deal with AWS CLI commands, allowign them to be tied into python programs easily. A few sample functions that can be used to apply CRUD operations to s3 buckets can be seen in the `Boto3_python` directory.
+
+# Autoscaling & Load Balancing
+
+- Autsocaling is the automatic adjustment of comptuational resources based on server load. 
+- Load Balancing ditributes traffic between instances to avoid one EC2 instance getting overwhelmed. Done by an Application Load Balancer (ALB) 
+
+### Autoscaling group Exercise:
+
+- Want an autoscalign group that has a minimum size, can scale out as needed (to a maximum size), and scale back down when no longer needed
+    - for now, start with 2 EC2 instances and scale out to 3 if required.
+
+**To create and autoscaling group**
+```
+- Need an ASG: Dependent on having either a launch tmeplate or launch configuration available.
+- ALB: Target group HTTP 80, 
+- AWS keys
+- VPC - Subnets - Security Group
+
+
+To make highly available, want to deploy in mutliple availability zones, for example first instance in Ireland, second in London, third in Paris. Ideally keep latency low by not having availability zones spaced too far apart.
+
+Info Needed:
+- AMI-id
+- EBS storage
+
+```
+
+To launch an autoscaling group, need to start with an AMI. This will then be used to set up a launch template:
+
+```
+- Select 'Launch Template'
+- Select the AMI that you want to use, and configure the other options to fit your.
+- under "user Data", it is advisable to add a bash script with the actions required to bring the app online.
+- Add the security group of choice and so on, similar to an instance launch
+
+```
+
+With the launch template set up, we can use this to configure an autoscaling group
+
+```
+- Click on the autoscaling group option
+- Create a new autoscaling group
+- Add your launch template when prompted
+- Set the limitations for scaling up
+```
+The autoscaling group can be set to have a minimum and maximum number of instances.
 
