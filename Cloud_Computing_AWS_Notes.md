@@ -230,6 +230,6 @@ A good idea is to split various metrics into separate dashboards, so that partic
     - Scaling inwards towards minimum number of instances as demand drops
 
 - Scaling on Demand (Terminology)
-    - Scaling Up versus scaling out: Scaling up means making components on an instance bigger to meet demand (e.g. increasing CPU capacity). Scaling means increasing the number of instances
+    - Scaling Up versus scaling out: Scaling up means making components on an instance bigger to meet demand (e.g. increasing CPU capacity). Scaling outmeans increasing the number of instances
     - Scaling to demand is generally best done by sxcaling out, as the previous configuration is known to be working.
 
