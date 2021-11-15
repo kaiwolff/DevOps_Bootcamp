@@ -178,4 +178,58 @@ Full guide to editing or setting up an alarm [here](https://docs.aws.amazon.com/
 
 More on SNS groups [here](https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html)
 
+### Monitoring Concepts
+
+![](images/Monitoring_Diagram.png)
+
+- A variety of things may need to be monitored
+- This depends on the app and infrastructure, but a general guideline (applicable to our example app) might be:
+    - CPU utilisation
+    - Number of requests, response times, latency
+    - The Firewall
+- Which particular resources are to be monitored and and how frequently is also important. For example, some resources may only need to be checked over once every couple of hours
+- Other questions include the choice of tools, and who will be responsible for keeping track of monitoring and responding
+- Also need to ensure the correct people are notified when alarms are triggered
+
+#### The 4 Golden Signals of Monitoring
+
+These are considered the basics of monitoring virtual infrastructure. They are:
+
+- Latency
+    - the time taken to service a request.
+    - Important because slow responses indicate performance degradation or insufficient resources
+- Traffic
+    - Number and type of requests with time
+    - Important as this shows which services are beign used and how often (e.g. how many database requests an app is havign to make or how many sessions are active concurrently)
+- Errors
+    - The rate of requests returning an error code
+- Saturation
+    - How close to maximum utilisation resources are
+    - Very important as ability to provide service may decrease the closer to full utilisation an instance is
+
+
+## Responding to Monitoring
+
+AWS' default monitoring service is Amazon Cloudwatch, which can be used for most of their resources. Key is to attempt to automate responses to monitoring. This can be done most easily with auto-scaling groups. For example, if demand peaks and services go beyond a particular utilisation, it would be useful to spin up additional instances. Defence against DDoS attacks and similar types of attempts by potentially malicious users is also available as a service, though the technical details are beyond the scope of these notes.
+
+- Aamazon offers notifications to the user, which were implemented as previously described. 
+- There are also services to queue requests (SQS, or Simple Queueing Service)
+    - This holds requests and processes them in turn, avoiding reqturning error codes.
+- Amazon Lambdas are a way of increasing capacity by only the amount used.
+
+
+A good idea is to split various metrics into separate dashboards, so that particular signals or instance types might be monitored by dedicated teams (for example a team dedicated to monitoring and analysing traffic, or a team concerned with saturation of a database server)
+
+## Automating the sample app
+
+- Application Load Balancer
+- Autoscaling Group
+- Launch template configuration - how many instances should be running at all times
+    - Minimum and maximum required (e.g. min=2, max=3)
+- Policy on scaling otu and scaling in
+    - Scaling inwards towards minimum number of instances as demand drops
+
+- Scaling on Demand (Terminology)
+    - Scaling Up versus scaling out: Scaling up means making components on an instance bigger to meet demand (e.g. increasing CPU capacity). Scaling means increasing the number of instances
+    - Scaling to demand is generally best done by sxcaling out, as the previous configuration is known to be working.
 
