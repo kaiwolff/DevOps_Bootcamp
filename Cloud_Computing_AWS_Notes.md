@@ -3,7 +3,7 @@
 ## Defining Cloud Computing
 
 - Have computational resources or services available via a network, rather than restricting to a local machine or facility.
-- This can be either on the internet, or on an organisation-internal channel. A hybrid of hte two is also possible.
+- This can be either on the internet, or on an organisation-internal channel. A hybrid of the two is also possible.
     - An example of this is banking, where confidential data will be managed on an internal cloud, but publically accessible files will be served from a public cloud
 - Clouds are used by almost any larger organisation that requires computing services.
 
@@ -220,7 +220,7 @@ AWS' default monitoring service is Amazon Cloudwatch, which can be used for most
 
 A good idea is to split various metrics into separate dashboards, so that particular signals or instance types might be monitored by dedicated teams (for example a team dedicated to monitoring and analysing traffic, or a team concerned with saturation of a database server)
 
-## Automating the sample app
+## Automating Monitoring on a sample app
 
 - Application Load Balancer
 - Autoscaling Group
