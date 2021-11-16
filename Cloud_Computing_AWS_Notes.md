@@ -52,6 +52,8 @@ Again, note that these are not always available in every region.
 
 ## Launching an Instance
 
+
+**ABSOLUTELY VITAL: BE CAREFUL WITH ACCESS KEYS**. Information on best practices [here](https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html)
 - Requires a key. This can eithe rbe created or obtained from an administrator, depending on the organisation's setup.
 - The key needs to be moved to a connecting machine's .ssh folder
 
@@ -336,3 +338,42 @@ With the launch template set up, we can use this to configure an autoscaling gro
 ```
 The autoscaling group can be set to have a minimum and maximum number of instances.
 
+
+
+# AWS Networking
+## VPCs
+
+Short for Virtual Private Cloud.
+
+- Allows the reservation of a space on AWS with access restricted to allowed users
+- Tied to aparticular region
+- Does nto have internet access unless internet gateway is set up for VPC
+
+![](images/VPC_Diagram.png)
+
+Inside the VPC, can have Subnets, which are governed by a network access control list, and then a security group.
+
+Network ACL are applicable to a subnet, while security groups are applicable to one or more instances, and several security groups can exist in the same subnet.
+
+Network ACL will have inbound and outbound rules.
+
+## VPC Set UP - Step by Step
+Usign an example as 10.110.0.0/16:
+
+    1. Decide on CIDR block to use
+    2. Internet Gateway
+        2.1 Attach IG to VPC
+    3. Route Table (RT)
+        3.1 allow CIDR block
+        3.2 All all 0.0.0.0/16
+    4. Public Subnet 10.110.1.0/24 (will use for for Node-app 3000)
+        4.1 connect to VPC
+        4.2 Private Subnet 10.110.2.0/24 (will use for MongoDB 27017)
+    5. Associate public subnet to RT
+    6. Security Groups public and private with required rules for their subnets
+
+    Testing the VPC config for the public subnet & SG for App
+
+    
+
+NACL should be automatically created with `allow all` rules, though this can be set up separately if more specific rules are required.
